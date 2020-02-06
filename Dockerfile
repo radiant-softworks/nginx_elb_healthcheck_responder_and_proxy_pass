@@ -1,5 +1,7 @@
-from docker:1.17.8
+FROM nginx:1.17.8
 
-COPY ./default.template /etc/nginx/conf.d/default.template
+RUN rm /etc/nginx/conf.d/default.conf && mkdir -p /etc/nginx/templates
 
-CMD ["/bin/bash", "-c", "envsubst < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
+COPY ./default.template /etc/nginx/templates/default.template
+
+CMD ["/bin/bash", "-c", "DOLLAR='$' envsubst < /etc/nginx/templates/default.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"]
