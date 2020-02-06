@@ -1,18 +1,18 @@
 server {
-    listen  80;
+    listen  ${PORT};
     charset utf-8;
 
-    location /healthcheck {
+    location ${HEALTHCHECK_PATH} {
         add_header Content-Type text/plain;
         return 200 'healthy';
     }
 
     location / {
-        proxy_pass http://${APP_HOST};
-        proxy_set_header Host $host;
+        proxy_pass http://${PROXY_PASS_HOST};
+        proxy_set_header Host ${DOLLAR}host;
         proxy_redirect off;
         proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Upgrade ${DOLLAR}http_upgrade;
         proxy_set_header Connection "upgrade";
     }
 }
